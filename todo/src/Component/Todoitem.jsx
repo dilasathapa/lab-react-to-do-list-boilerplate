@@ -12,6 +12,7 @@ class TodoItem extends React.Component{
                 <button onClick={()=>deleteItem(index)}>Delete</button>
             </div>
             </>
+            
         )
     }
 }
