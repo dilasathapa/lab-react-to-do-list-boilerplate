@@ -1,48 +1,5 @@
-
-import React from 'react';
-import './App.css'
-import TodoItem from './Component/Todoitem';
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-
-//       </div>
-//     </>
-//   )
-// }
-
-
-// class App extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       count: 0
-//     }
-//   }
-
-//   render() {
-//     const countt = this.state.count;
-
-//     return (
-//       <>
-//         <div className="card">
-//           <button onClick={() => this.setState({ count: countt + 1 })}>
-//             count is {countt}
-//           </button>
-//         </div>
-//       </>
-//     )
-//   }
-// }
-
-// export default App;
+import React from "react";
+import TodoItem from "./Component/Todoitem";
 
 class App extends React.Component{
   constructor(){
@@ -53,96 +10,83 @@ class App extends React.Component{
     }
   }
 
-  // chnaging input
-  inputChange =(e) =>{
-    this.setState({input : e.target.value})
+  inputChange =(e)=>{
+    // console.log("e",e)
+    this.setState({
+      input : e.target.value,
+    })
   }
 
-  // submitting the input and adding input to the todoList array
-  formSubmit =(e)=>{
+
+  formSubmit = (e)=>{
     e.preventDefault();
-    console.log(this.state.todoList)
-    if(this.state.input.length > 0){
+    if(this.state.input.length > 0 ){
       this.setState({
         input : "",
-        todoList : [...this.state.todoList, this.state.input]
+        todoList : [...this.state.todoList,  this.state.input]
       })
     }
+    console.log("tasks", this.state.todoList)
   }
 
-  // update function to update the todo data
-  updateItem = (ele, index) =>{
-    let todoitems = this.state.todoList;
-    todoitems.splice(index, 1, ele)
-    this.setState({})
+  updateItem = (newitem, index) =>{
+    let data = this.state.todoList;
+    data.splice(index, 1, newitem)
+    this.setState({
+      todoList : data,
+    })
   }
 
-  // deleteItem from todolist
-
-  deleteItem = (index)=>{
-    let todoitems = this.state.todoList;
-    todoitems.splice(index, 1)
-    this.setState({})
+  deleteItem =(index) =>{
+    let data = this.state.todoList;
+    data.splice(index, 1);
+    this.setState({
+      todoList : data,
+    })
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   render(){
     return (
       <>
-        <h1>Todo List</h1>
-        <form onSubmit={this.formSubmit}>
-          <input type="text" onChange={this.inputChange} value={this.state.input} />
-          <button>ADD</button>
-        </form>
-        <p>Input : {this.state.input}</p>
-
-        <div className="todoLists">
-          <h3>My Todo List</h3>
-          {
-            this.state.todoList.length == 0 ? (
-              <h4>todoList is empty for now</h4>
+        <div>
+          <form onSubmit={this.formSubmit}>
+            <input type="text" placeholder="enter the task"
+             value={this.state.input}
+             onChange={this.inputChange} />
+            <button>Add Item</button>
+          </form>
+          <h3>My tasks : {this.state.input}</h3>
+          <div>
+            <h2>My todo list</h2>
+            {
+              this.state.todoList.length == 0 ? (
+                <>
+                <h3>there is no task to be done</h3>
+                </>
               ) : (
-              // {/* map the todoList data*/}
+                this.state.todoList.map((ele, i)=>{
+                  return (
+                    <>
+                    <div>
+                      <TodoItem 
+                        e = {ele}
+                        index = {i}
+                        updateItem = {this.updateItem}
+                        deleteItem = {this.deleteItem}
+                      />
+                    </div>
+                    </>
+                  )
+                })
 
-              this.state.todoList.map((ele, index)=>{
-                return (
-                  <>
-                  <TodoItem 
-                    e = {ele}
-                    index = {index}
-                    updateItem = {this.updateItem}
-                    deleteItem = {this.deleteItem}
-                  />
-                  </>
-                )
-              })
+              )
+            }
+          </div>
 
-
-            )
-          }
         </div>
       </>
     )
   }
 }
-
 export default App;
-
-
